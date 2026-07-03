@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ally — Chat, Discover, Enjoy</title>
+    <meta name="description" content="Ally is a next-generation real-time chat platform. Join the waitlist for early access. Built by Mokavshire LLC.">
+    <meta name="keywords" content="Ally, chat platform, real-time messaging, custom software, Mokavshire">
+    <meta property="og:title" content="Ally — Chat, Discover, Enjoy">
+    <meta property="og:description" content="A production-grade, real-time chat platform with full API compatibility. Join the waitlist.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235865F2'/%3E%3Cpath d='M8 22L16 10L24 22H8Z' fill='white' opacity='0.9'/%3E%3Ccircle cx='16' cy='19' r='2' fill='%235865F2'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blurple: #5865F2;
+            --blurple-dark: #4752C4;
+            --blurple-light: #7983F5;
+            --bg-dark: #0B0E18;
+            --bg-card: #12162A;
+            --bg-card-hover: #181D36;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B7D1;
+            --text-muted: #6B7299;
+            --accent-green: #57F287;
+            --accent-cyan: #00D4AA;
+            --border: rgba(88, 101, 242, 0.15);
+            --glow: rgba(88, 101, 242, 0.25);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(20px);
+            background: rgba(11, 14, 24, 0.8);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .nav-logo svg { width: 36px; height: 36px; }
+        .nav-logo span {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-cta {
+            background: var(--blurple);
+            color: white !important;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: background 0.2s, transform 0.2s !important;
+        }
+        .nav-cta:hover { background: var(--blurple-dark); transform: translateY(-1px); }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            max-width: 720px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(88, 101, 242, 0.12);
+            border: 1px solid rgba(88, 101, 242, 0.25);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            color: var(--blurple-light);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--blurple-light), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+        .waitlist-form {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+        .waitlist-form input {
+            flex: 1;
+            padding: 0.9rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .waitlist-form input::placeholder { color: var(--text-muted); }
+        .waitlist-form input:focus { border-color: var(--blurple); }
+        .waitlist-form button {
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            border: none;
+            background: var(--blurple);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .waitlist-form button:hover { background: var(--blurple-dark); transform: translateY(-1px); }
+        .waitlist-form button:active { transform: translateY(0); }
+        .hero-note {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .hero-stats .stat-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--blurple-light);
+        }
+        .hero-stats .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Sections ── */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--blurple-light);
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-header .section-desc {
+            margin: 0 auto;
+        }
+
+        /* ── Features Grid ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(88, 101, 242, 0.35);
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.25rem;
+        }
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* icon backgrounds */
+        .icon-blurple  { background: rgba(88,101,242,0.15); }
+        .icon-green    { background: rgba(87,242,135,0.15); }
+        .icon-cyan     { background: rgba(0,212,170,0.15); }
+        .icon-purple   { background: rgba(155,89,255,0.15); }
+        .icon-orange   { background: rgba(255,163,71,0.15); }
+        .icon-pink     { background: rgba(255,107,152,0.15); }
+
+        /* ── Products / Services ── */
+        .products-section {
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 4rem 3rem;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .product-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .product-card:hover {
+            border-color: rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+        }
+        .product-card .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        .tag-platform  { background: rgba(88,101,242,0.2); color: var(--blurple-light); }
+        .tag-service   { background: rgba(0,212,170,0.2); color: var(--accent-cyan); }
+        .tag-hosting   { background: rgba(255,163,71,0.2); color: #FFA347; }
+        .tag-tools     { background: rgba(155,89,255,0.2); color: #9B59FF; }
+        .product-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .product-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .product-price {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ── How It Works ── */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+        .step {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+        .step-num {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--blurple), var(--blurple-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0 auto 1.25rem;
+        }
+        .step h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ── About / Business ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+        .about-text h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        .about-details {
+            display: grid;
+            gap: 1rem;
+        }
+        .about-detail {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .about-detail .detail-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(88,101,242,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .about-detail .detail-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .about-detail .detail-value {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* ── Tech Stack ── */
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .tech-pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: border-color 0.2s;
+        }
+        .tech-pill:hover { border-color: var(--blurple); color: var(--text-primary); }
+
+        /* ── CTA ── */
+        .final-cta {
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .final-cta .section-title { margin-bottom: 1rem; }
+        .final-cta .waitlist-form { margin-top: 2rem; }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+        }
+        .footer-col h4 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+        .footer-col a {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.25rem 0;
+            transition: color 0.2s;
+        }
+        .footer-col a:hover { color: var(--text-primary); }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ── Success State ── */
+        .success-msg {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-green);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .success-msg.show { display: flex; justify-content: center; }
+        .success-msg svg { flex-shrink: 0; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(11, 14, 24, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 1.5rem 2rem;
+                border-bottom: 1px solid var(--border);
+                gap: 1rem;
+            }
+            .mobile-menu-btn { display: block; }
+            .waitlist-form { flex-direction: column; }
+            .waitlist-form button { width: 100%; }
+            .hero-stats { gap: 1.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .products-section { padding: 3rem 1.5rem; }
+            .footer-inner { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="#5865F2"/>
+                    <path d="M8 22L16 10L24 22H8Z" fill="white" opacity="0.9"/>
+                    <circle cx="16" cy="19" r="2" fill="#5865F2"/>
+                </svg>
+                <span>Ally</span>
+            </a>
+            <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="waitlist">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Early access opening soon
+            </div>
+            <h1>Your community,<br><span class="gradient">your platform.</span></h1>
+            <p>Ally is a next-generation real-time chat platform built for communities that want full control — guilds, roles, bots, themes, plugins, and more.</p>
+            <form class="waitlist-form" id="waitlistForm">
+                <input type="email" placeholder="Enter your email" required aria-label="Email address">
+                <button type="submit">Join Waitlist</button>
+            </form>
+            <p class="hero-note">Free to join · No spam · Be first in line</p>
+            <div class="success-msg" id="successMsg">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                You're on the list! We'll be in touch.
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="stat-num">50+</div>
+                    <div class="stat-label">Event Types</div>
+                </div>
+                <div>
+                    <div class="stat-num">48</div>
+                    <div class="stat-label">Permission Flags</div>
+                </div>
+                <div>
+                    <div class="stat-num">30+</div>
+                    <div class="stat-label">Database Tables</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="section-header">
+            <span class="section-label">Platform Features</span>
+            <h2 class="section-title">Everything you'd expect, and more.</h2>
+            <p class="section-desc">Ally is built from the ground up as a full-featured chat platform with Discord API v10 compatibility — no compromises.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon icon-blurple">💬</div>
+                <h3>Real-Time Messaging</h3>
+                <p>WebSocket gateway with full opcode support, 18 intent bits, and 50+ event types. Instant delivery, every time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-green">🏰</div>
+                <h3>Guild System</h3>
+                <p>Servers, channels, roles, permission overwrites, invites, bans, and complete audit logging out of the box.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-cyan">🔒</div>
+                <h3>48-Flag Permissions</h3>
+                <p>BigInt permission system with role hierarchy and channel overwrites. Fine-grained control over every action.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-purple">🎨</div>
+                <h3>Theme Editor</h3>
+                <p>60+ CSS custom properties, 5 built-in presets, and full import/export with .allytheme files. Make it yours.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-orange">🧩</div>
+                <h3>Plugin System</h3>
+                <p>Sandboxed iframe plugins with manifest support, gateway hooks, and a built-in plugin store for extensibility.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-pink">🤖</div>
+                <h3>Developer Portal</h3>
+                <p>Full application management — bot creation, OAuth2, slash command registration, and webhook integrations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products & Services -->
+    <section id="services" style="padding-bottom: 3rem;">
+        <div class="products-section">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <span class="section-label">Products &amp; Services</span>
+                <h2 class="section-title">What we build and offer</h2>
+                <p class="section-desc">From platforms to custom solutions — we create production-grade software tailored to your needs.</p>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <span class="tag tag-platform">Platform</span>
+                    <h3>Ally Chat Platform</h3>
+                    <p>A production-grade, real-time chat platform with full Discord API v10 compatibility. Guilds, bots, themes, plugins, MFA, and mobile-ready.</p>
+                    <div class="product-price">Coming soon · Waitlist open</div>
+                </div>
+                <div class="product-card">
+                    <span class="tag tag-service">Custom Software</span>
+                    <h3>Custom Software Development</h3>
+                    <p>Bespoke software solutions built to specification. Full-stack web apps, APIs, real-time systems, database architecture, and deployment.</p>
+                    <div class="product-price">Custom pricing · Contact us</div>
+                </div>
+                <div class="product-card">
+                    <span class="tag tag-tools">Bots &amp; Automation</span>
+                    <h3>Discord Bot Development</h3>
+                    <p>Professional Discord bots with advanced features — cross-server relay systems, moderation suites, custom cog development, and full hosting.</p>
+                    <div class="product-price">Starting at $50 · Custom quotes</div>
+                </div>
+                <div class="product-card">
+                    <span class="tag tag-hosting">Hosting</span>
+                    <h3>Game Server Management</h3>
+                    <p>Forge Panel — a modern game server management platform with 690+ server eggs, plugin support, and a full Discord bot integration.</p>
+                    <div class="product-price">Plans starting at $5/mo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section>
+        <div class="section-header">
+            <span class="section-label">Getting Started</span>
+            <h2 class="section-title">Three steps to your community</h2>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Join the Waitlist</h3>
+                <p>Enter your email above to secure your spot. We'll notify you the moment early access opens.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Set Up Your Server</h3>
+                <p>Create your guild, configure roles and permissions, pick a theme, and invite your community.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Go Live</h3>
+                <p>Start chatting in real-time. Add bots, install plugins, and make the platform truly yours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section>
+        <div class="section-header">
+            <span class="section-label">Built With</span>
+            <h2 class="section-title">Production-grade tech stack</h2>
+            <p class="section-desc">Built on battle-tested technologies designed for scale, reliability, and performance.</p>
+        </div>
+        <div class="tech-grid">
+            <span class="tech-pill">Node.js</span>
+            <span class="tech-pill">Express</span>
+            <span class="tech-pill">PostgreSQL</span>
+            <span class="tech-pill">MongoDB Atlas</span>
+            <span class="tech-pill">WebSockets</span>
+            <span class="tech-pill">JWT Auth</span>
+            <span class="tech-pill">TOTP / MFA</span>
+            <span class="tech-pill">PM2</span>
+            <span class="tech-pill">Caddy</span>
+            <span class="tech-pill">Capacitor</span>
+            <span class="tech-pill">GitHub Actions</span>
+            <span class="tech-pill">Snowflake IDs</span>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-text">
+                <span class="section-label">About Us</span>
+                <h3>Built by Mokavshire LLC</h3>
+                <p>Mokavshire is a software company founded by Everest McArthur, focused on building custom, production-grade platforms and tools. We specialize in real-time communication systems, game server infrastructure, and bespoke software solutions.</p>
+                <p>From full-stack web platforms to Discord bots and mobile apps — we craft software that performs at scale and is built to last.</p>
+            </div>
+            <div class="about-details">
+                <div class="about-detail">
+                    <div class="detail-icon">🏢</div>
+                    <div>
+                        <div class="detail-label">Company</div>
+                        <div class="detail-value">Mokavshire LLC</div>
+                    </div>
+                </div>
+                <div class="about-detail">
+                    <div class="detail-icon">👤</div>
+                    <div>
+                        <div class="detail-label">Founder</div>
+                        <div class="detail-value">Everest McArthur</div>
+                    </div>
+                </div>
+                <div class="about-detail">
+                    <div class="detail-icon">📍</div>
+                    <div>
+                        <div class="detail-label">Jurisdiction</div>
+                        <div class="detail-value">Alberta, Canada</div>
+                    </div>
+                </div>
+                <div class="about-detail">
+                    <div class="detail-icon">📧</div>
+                    <div>
+                        <div class="detail-label">Contact</div>
+                        <div class="detail-value">founder@allyapp.cc</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="contact">
+        <h2 class="section-title">Ready to build your community?</h2>
+        <p class="section-desc" style="margin: 0 auto;">Join the waitlist and be among the first to experience Ally — the chat platform that puts you in control.</p>
+        <form class="waitlist-form" id="waitlistForm2">
+            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+            <button type="submit">Join Waitlist</button>
+        </form>
+        <div class="success-msg" id="successMsg2">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            You're on the list! We'll be in touch.
+        </div>
+        <p style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted);">
+            For custom software inquiries, reach out at <a href="mailto:founder@allyapp.cc" style="color: var(--blurple-light); text-decoration: none;">founder@allyapp.cc</a>
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+                        <rect width="32" height="32" rx="8" fill="#5865F2"/>
+                        <path d="M8 22L16 10L24 22H8Z" fill="white" opacity="0.9"/>
+                        <circle cx="16" cy="19" r="2" fill="#5865F2"/>
+                    </svg>
+                    <span>Ally</span>
+                </a>
+                <p>Chat, discover, enjoy. A next-generation real-time chat platform built for communities.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#waitlist">Waitlist</a>
+                    <a href="#services">Services</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a href="#about">About</a>
+                    <a href="mailto:founder@allyapp.cc">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Mokavshire LLC. All rights reserved. Canadian jurisdiction (Alberta).
+        </div>
+    </footer>
+
+    <script>
+        // Simple waitlist form handler
+        function handleWaitlist(form, successEl) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = form.querySelector('input').value;
+                // Store in localStorage as simple persistence
+                const waitlist = JSON.parse(localStorage.getItem('ally_waitlist') || '[]');
+                if (!waitlist.includes(email)) {
+                    waitlist.push(email);
+                    localStorage.setItem('ally_waitlist', JSON.stringify(waitlist));
+                }
+                form.style.display = 'none';
+                successEl.classList.add('show');
+            });
+        }
+        handleWaitlist(document.getElementById('waitlistForm'), document.getElementById('successMsg'));
+        handleWaitlist(document.getElementById('waitlistForm2'), document.getElementById('successMsg2'));
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.querySelector('.nav-links')?.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
