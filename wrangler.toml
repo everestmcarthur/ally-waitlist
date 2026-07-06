@@ -1,0 +1,19 @@
+name = "ally-waitlist"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ally-waitlist-db"
+database_id = "50ff7c10-5e10-486a-9d06-e958a45fb186"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "c79b989b08b64f2e85109e7877693ec1"
+
+[vars]
+APP_URL = "https://app.allyapp.cc"
+EMAIL_FROM = "no-reply@allyapp.cc"
+ENVIRONMENT = "production"
+ZOHO_ACCOUNT_ID = "4330650000000008002"
